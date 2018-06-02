@@ -15,7 +15,7 @@ Key Questions:
 1) How does Medicare spending vary by State
 2) How has Medicare spending changed over time (2011-2015)
 3) What are significant factors that have influenced these changes? 
-(Initial exploration will consider; population growth, state spending, DRGs costs)
+(Initial exploration will consider; population growth, state spending, diagnosis-related groups (DRGs) costs)
 
 
 Data sources:
