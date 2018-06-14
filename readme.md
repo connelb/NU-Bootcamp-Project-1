@@ -9,6 +9,8 @@ import pandas as pd
 import geopandas as gpd
 import numpy as np
 import re
+import matplotlib as mpl
+mpl.rcParams['figure.dpi']= 300
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.patches as mpatches
@@ -381,7 +383,7 @@ plt.legend(handles=[regres_equation,r_sq_patch])
 
 
 
-    <matplotlib.legend.Legend at 0x1a3078d470>
+    <matplotlib.legend.Legend at 0x1a27d51e10>
 
 
 
@@ -410,23 +412,6 @@ for state,drg in newdiagnoses.index.values:
 state_drg_counts = pd.DataFrame.from_dict(countsdictionary,orient='index')
 state_drg_counts = state_drg_counts.rename(columns={0:'relative discharges',1:'mod_DRG Definition'})
 ```
-
-
-```python
-state_drg_counts['mod_DRG Definition'].value_counts()
-```
-
-
-
-
-    MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY    19
-    SEPTICEMIA OR SEVERE SEPSIS W/O MV 96+ HOURS                  15
-    HEART FAILURE & SHOCK                                         14
-    CHRONIC OBSTRUCTIVE PULMONARY DISEASE                          2
-    SIMPLE PNEUMONIA & PLEURISY                                    1
-    Name: mod_DRG Definition, dtype: int64
-
-
 
 ## To try and visualize the data differently, we thought a geoheatmap could be informative for allowing people to see the data projected on a map of the US
 ### To achieve this, we looked to GeoPandas, a library that allows the mapping of geoJSON's into pandas dataframes
@@ -538,7 +523,7 @@ plt.show()
 ```
 
 
-![png](output_33_0.png)
+![png](output_32_0.png)
 
 
 ## As seen on the GeoHeatMap, an immediate trend is that several states with low populations actually end up having the most Medicare spent on them, relative to their populations and DC and Maryland continue to show as outliers
@@ -579,10 +564,11 @@ geo_state_drg = gpd.GeoDataFrame(geo_state_drg)
 
 ```python
 #Create plot of GeoMap data and format axes to be tight around US map
-list_of_drgs = []
-for drg in geo_state_drg['mod_DRG Definition'].unique():
-    list_of_drgs.append(drg)
-    list_of_drgs.append('')
+list_of_drgs = ['MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY','',
+               'SEPTICEMIA OR SEVERE SEPSIS W/O MV 96+ HOURS','',
+               'HEART FAILURE & SHOCK','',
+               'CHRONIC OBSTRUCTIVE PULMONARY DISEASE','',
+               'SIMPLE PNEUMONIA & PLEURISY']
 ax = geo_state_drg.plot(cmap='tab20b',column='drg_num')
 norm = Normalize(vmin=geo_state_drg['drg_num'].min(), 
                  vmax=geo_state_drg['drg_num'].max())
@@ -599,7 +585,7 @@ plt.show()
 ```
 
 
-![png](output_36_0.png)
+![png](output_35_0.png)
 
 
 ## Interestingly, there appears to be clusters of states with top DRG's that is both regional and related to overall population. Rural states appear to have their top DRG as joint replacements.
@@ -646,7 +632,7 @@ plt.plot(reduced_yearly_pulmonary_disease.index.values, reduced_yearly_pulmonary
 plt.xticks(reduced_yearly_septicemia.index.values)
 plt.ylim(bottom = 250000, top = 800000)
 _ax = plt.gca()
-_ax.set_title('Top 5 DRG Counts by Year')
+_ax.set_title('Top 5 DRG Counts by Year',fontsize=16)
 _ax.set_xlabel('Year')
 _ax.set_ylabel('Total of DRGs')
 plt.legend()
@@ -654,5 +640,5 @@ plt.show()
 ```
 
 
-![png](output_39_0.png)
+![png](output_38_0.png)
 
